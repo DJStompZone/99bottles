@@ -36,12 +36,11 @@ section .text
 global _start
 
 ; --------------------------------------------------------
-; Macro: WRITE ptr,len - stdout for current platform     |
-; clobbers rax,rdi,rsi,rdx (gnu) rcx,rdx,r8,r9,rax (nt)  |
+; Macro: WRITE ptr,len  -> stdout
+; Clobbers: rcx, rdx, r8, r9, rax (win32)  rax, rdi, rsi, rdx (gcc)
 ; --------------------------------------------------------
 %macro WRITE 2
 %ifdef TARGET_WIN64
-    ; rcx=hStdOut, rdx=ptr, r8=len, r9=&bytes_written
     mov     rcx, [rel hStdOut]
     mov     rdx, %1
     mov     r8,  %2
@@ -59,8 +58,8 @@ global _start
 %endmacro
 
 ; -----------------------------------------------------
-; print_u64: prints unsigned integer in RAX to stdout |
-; Clobbers: rax, rbx, rcx, rdx, rsi, r8, r9           |
+; prints unsigned integer in RAX to stdout
+; Clobbers: rax, rbx, rcx, rdx, rsi, r8, r9
 ; -----------------------------------------------------
 print_u64:
     push    rbx
@@ -92,9 +91,9 @@ print_u64:
     pop     rbx
     ret
 
-; ------------
-; Win32 Init |
-; ------------
+; -----------------
+; Win64 init stdout
+; -----------------
 %ifdef TARGET_WIN64
 init_io:
     mov     ecx, STD_OUTPUT_HANDLE
@@ -109,10 +108,10 @@ _start:
 %ifdef TARGET_WIN64
     call    init_io
 %endif
-    mov     rcx, 99
+    mov     r15, 99
 
 .loop:
-    mov     rax, rcx
+    mov     rax, r15
     call    print_u64
     lea     rsi, [rel bottles]
     mov     rdx, bottles_len
@@ -121,7 +120,7 @@ _start:
     mov     rdx, on_wall_len
     WRITE   rsi, rdx
 
-    mov     rax, rcx
+    mov     rax, r15
     call    print_u64
     lea     rsi, [rel bottles]
     mov     rdx, bottles_len
@@ -131,8 +130,8 @@ _start:
     mov     rdx, take_down_len
     WRITE   rsi, rdx
 
-    dec     rcx
-    mov     rax, rcx
+    dec     r15
+    mov     rax, r15
     call    print_u64
     lea     rsi, [rel bottles]
     mov     rdx, bottles_len
@@ -144,7 +143,7 @@ _start:
     mov     rdx, nl_len
     WRITE   rsi, rdx
 
-    test    rcx, rcx
+    test    r15, r15
     jg      .loop
 
 %ifdef TARGET_WIN64
