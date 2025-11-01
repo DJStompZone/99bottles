@@ -1,7 +1,8 @@
 # 99 Bottles Poly NASM
 
-Cross-platform x86-64 assembly implementation of "99 Bottles of Beer"
-Build it for Linux or Windows from a single assembly source via a small macro
+Cross-platform x86-64 assembly implementation of "99 Bottles of Beer".
+
+Build it for Linux or Windows from a single assembly source via a small macro.
 
 ## Overview
 Demonstrates how to write a single NASM source that conditionally compiles for both ELF64 (Linux) and PE/COFF (Win64).
