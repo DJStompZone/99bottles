@@ -4,7 +4,7 @@ Cross-platform x86-64 assembly implementation of "99 Bottles of Beer"
 Build it for Linux or Windows from a single assembly source via a small macro
 
 ## Overview
-`poly.asm` demonstrates how to write a single NASM source that conditionally compiles for both ELF64 (Linux) and PE/COFF (Win64).
+Demonstrates how to write a single NASM source that conditionally compiles for both ELF64 (Linux) and PE/COFF (Win64).
 
 ## Compilation
 
